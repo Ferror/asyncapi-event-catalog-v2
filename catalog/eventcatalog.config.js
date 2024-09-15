@@ -23,5 +23,24 @@ export default {
     }
   },
   // required random generated id used by eventcatalog
-  cId: '48cea24e-cf14-47c4-a162-31b9c8754607'
+  cId: '48cea24e-cf14-47c4-a162-31b9c8754607',
+  generators: [
+    // Add single AsyncAPI file to a domain
+    [
+      '@eventcatalogtest/generator-asyncapi',
+      {
+        services: [
+          {
+            path: path.join(__dirname, 'asyncapi', 'account-service.yaml')
+          },
+          {
+            path: path.join(__dirname, 'asyncapi', 'payment-service.yaml')
+          },
+        ],
+        domain: { id: 'orders', name: 'Orders', version: '0.0.1' },
+        // Run in debug mode, for extra output, if your AsyncAPI fails to parse, it will tell you why
+        debug: true
+      },
+    ],
+  ],
 }
