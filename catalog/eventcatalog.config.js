@@ -1,4 +1,7 @@
 import path from 'path';
+import url from 'url';
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 /** @type {import('@eventcatalog/core/bin/eventcatalog.config').Config} */
 export default {
