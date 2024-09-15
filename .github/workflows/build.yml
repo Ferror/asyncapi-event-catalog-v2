@@ -43,11 +43,11 @@ jobs:
 
       -
         name: Add .nojekyll file to catalog
-        run: cd catalog/out/ && touch .nojekyll
+        run: cd catalog/dist/ && touch .nojekyll
 
       -
         name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: catalog/out/ # The folder the action should deploy.
+          folder: catalog/dist/ # The folder the action should deploy.
           branch: website # The branch the action should deploy.
