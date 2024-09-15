@@ -1,0 +1,53 @@
+name: Build Catalog
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: ~
+
+permissions:
+  contents: write
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      -   # Copies the repository files to the Action Runner
+        name: Checkout Repository
+        uses: actions/checkout@v4.1.0
+
+      -
+        name: Install Node.js
+        uses: actions/setup-node@v4.0.0
+        with:
+          node-version: 20.17
+
+      - # Upload Async API files to storage
+        name: Move Async API files to Catalog
+        run: |
+          cp account-service/asyncapi.yaml catalog/asyncapi/account-service.yaml
+          cp payment-service/asyncapi.yaml catalog/asyncapi/payment-service.yaml
+
+      - # Generate Catalog from Async API files
+        name: Install Dependencies
+        run: cd catalog && npm install
+
+      - # Generate Catalog from Async API files
+        name: Generate Catalog
+        run: cd catalog && npm run generate
+
+      -
+        name: Build Production Catalog
+        run: cd catalog && npm run build
+
+      -
+        name: Add .nojekyll file to catalog
+        run: cd catalog/out/ && touch .nojekyll
+
+      -
+        name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: catalog/out/ # The folder the action should deploy.
+          branch: website # The branch the action should deploy.
